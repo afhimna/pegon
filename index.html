@@ -66,7 +66,10 @@ async function loadKamus(){
     const data = await res.json();
 
     data.forEach(item=>{
-      const latin = item["Kata Latin"].toLowerCase();
+      const latin = item["Kata Latin"]
+  .toLowerCase()
+  .trim()
+  .replace(/[.,?!]/g, '');
       kamusPegon[latin] = item["Aksara Pegon"];
     });
 
@@ -128,7 +131,10 @@ function transliterasi(teks){
       continue;
     }
 
-    let lower = token.toLowerCase();
+    let lower = token
+  .toLowerCase()
+  .trim()
+  .replace(/[.,?!]/g, '');
 
     // 🔥 cek 2 kata
     if(i < tokens.length-1){
