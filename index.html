@@ -114,6 +114,14 @@ function transliterasiHuruf(kata){
   }
   return hasil;
 }
+const input = document.getElementById("inputText");
+
+input.addEventListener("keydown", function(e){
+  if(e.key === "Enter" && !e.shiftKey){
+    e.preventDefault(); // cegah enter bikin baris baru
+    btn.click(); // jalankan tombol convert
+  }
+});
 
 /* =======================
    TRANSLITERASI UTAMA
