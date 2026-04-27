@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transliterasi Pegon</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{
+  background:#f9f9f9;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:2rem 1rem
+}
+h1{margin-bottom:1rem;color:#555;letter-spacing:.1em}
+textarea{
+  width:90vw;max-width:700px;height:160px;
+  padding:1rem;border-radius:10px;
+  border:1.5px solid #ccc;font-size:1.1rem
+}
+button{
+  margin-top:1rem;padding:.8rem 2.5rem;
+  border:none;border-radius:30px;
+  background:#8ab6d6;color:#fff;
+  font-size:1.1rem;font-weight:600;
+  cursor:pointer
+}
+button:disabled{opacity:.6;cursor:not-allowed}
+#output{
+  margin-top:2rem;width:90vw;max-width:700px;
+  min-height:140px;padding:1rem;
+  border-radius:14px;background:#fff;
+  font-size:1.9rem;direction:rtl;
+  white-space:pre-wrap;letter-spacing:.08em
+}
+footer{margin-top:auto;color:#999;font-size:.9rem}
+</style>
+</head>
+
+<body>
+
+<h1>Transliterasi Pegon</h1>
+
+<textarea id="inputText" placeholder="Masukkan teks latin..."></textarea>
+<button id="btnConvert" disabled>Memuat kamus...</button>
+
+<div id="output"></div>
+<footer>© 2025 • Pegon Engine</footer>
+
+<script>
+const URL_KAMUS = 'https://arsyad36.github.io/pegon/pegon.json';
+
+let kamusPegon = {};
+const btn = document.getElementById("btnConvert");
+const output = document.getElementById("output");
+
+/* =======================
+   LOAD KAMUS
+======================= */
+async function loadKamus(){
+  try{
+    const res = await fetch(URL_KAMUS);
+    const data = await res.json();
+
+    data.forEach(item=>{
+      const latin = item["Kata Latin"].toLowerCase();
+      kamusPegon[latin] = item["Aksara Pegon"];
+    });
+
+    btn.disabled = false;
+    btn.textContent = "Ubah ke Pegon";
+    output.textContent = "Kamus siap (" + Object.keys(kamusPegon).length + " kata)";
+  }catch(e){
+    output.textContent = "Gagal load kamus!";
+    console.error(e);
+  }
+}
+
+/* =======================
+   ATURAN HURUF
+======================= */
+const aturanHuruf = [
+  { latin:/ng/gi, pegon:"ڠ" },
+  { latin:/ny/gi, pegon:"ۑ" }
+];
+
+const hurufMap = {
+  a:"ا", b:"ب", c:"چ", d:"د", e:"ٓ",
+  f:"ف", g:"ڮ", h:"ح", i:"ي", j:"ج",
+  k:"ك", l:"ل", m:"م", n:"ن", o:"و",
+  p:"ڤ", q:"ق", r:"ر", s:"س", t:"ت",
+  u:"ع", v:"ف", w:"و", y:"ي", z:"ز"
+};
+
+/* =======================
+   KONVERSI HURUF
+======================= */
+function transliterasiHuruf(kata){
+  let teks = kata.toLowerCase();
+
+  aturanHuruf.forEach(rule=>{
+    teks = teks.replace(rule.latin, rule.pegon);
+  });
+
+  let hasil = "";
+  for(let char of teks){
+    hasil += hurufMap[char] || char;
+  }
+  return hasil;
+}
+
+/* =======================
+   TRANSLITERASI UTAMA
+======================= */
+function transliterasi(teks){
+  const tokens = teks.match(/[a-zA-Z'-]+|[.,?!]/g) || [];
+  let hasil = [];
+
+  for(let i=0;i<tokens.length;i++){
+    let token = tokens[i];
+
+    // tanda baca
+    if(/[.,?!]/.test(token)){
+      hasil.push(token);
+      continue;
+    }
+
+    let lower = token.toLowerCase();
+
+    // 🔥 cek 2 kata
+    if(i < tokens.length-1){
+      let next = tokens[i+1];
+      if(!/[.,?!]/.test(next)){
+        let gabung = (token + " " + next).toLowerCase();
+        if(kamusPegon[gabung]){
+          hasil.push(kamusPegon[gabung]);
+          i++;
+          continue;
+        }
+      }
+    }
+
+    // cek 1 kata
+    if(kamusPegon[lower]){
+      hasil.push(kamusPegon[lower]);
+    }else{
+      hasil.push(transliterasiHuruf(token));
+    }
+  }
+
+  return hasil.join(" ");
+}
+
+/* =======================
+   EVENT
+======================= */
+btn.onclick = ()=>{
+  const teks = inputText.value.trim();
+  if(!teks) return;
+  output.textContent = transliterasi(teks);
+};
+
+loadKamus();
+</script>
+
+</body>
+</html>
