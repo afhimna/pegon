@@ -130,53 +130,59 @@ function transliterasiHuruf(kata){
    TRANSLITERASI UTAMA
 ======================= */
 function transliterasi(teks){
-  const tokens = teks.match(/[a-zA-Z'-]+|[.,?!]/g) || [];
-  let hasil = [];
+  const lines = teks.split("\n"); // 🔥 pecah per baris
+  let hasilAkhir = [];
 
-  for(let i=0;i<tokens.length;i++){
-    let token = tokens[i];
+  lines.forEach(line=>{
+    const tokens = line.match(/[a-zA-Z'-]+|[.,?!]/g) || [];
+    let hasil = [];
 
-    // tanda baca
-    if(/[.,?!]/.test(token)){
-      hasil.push(token);
-      continue;
-    }
+    for(let i=0;i<tokens.length;i++){
+      let token = tokens[i];
 
-    let lower = token
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g,' ')
-      .replace(/[.,?!]/g,'');
+      // tanda baca
+      if(/[.,?!]/.test(token)){
+        hasil.push(token);
+        continue;
+      }
 
-    // 🔥 cek 2 kata (bigram)
-    if(i < tokens.length-1){
-      let next = tokens[i+1];
-      if(!/[.,?!]/.test(next)){
-        let gabung = (token + " " + next)
-          .toLowerCase()
-          .trim()
-          .replace(/\s+/g,' ')
-          .replace(/[.,?!]/g,'');
+      let lower = token
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g,' ')
+        .replace(/[.,?!]/g,'');
 
-        if(kamusPegon[gabung]){
-          hasil.push(kamusPegon[gabung]);
-          i++;
-          continue;
+      // 🔥 cek 2 kata
+      if(i < tokens.length-1){
+        let next = tokens[i+1];
+        if(!/[.,?!]/.test(next)){
+          let gabung = (token + " " + next)
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g,' ')
+            .replace(/[.,?!]/g,'');
+
+          if(kamusPegon[gabung]){
+            hasil.push(kamusPegon[gabung]);
+            i++;
+            continue;
+          }
         }
+      }
+
+      // cek 1 kata
+      if(kamusPegon[lower]){
+        hasil.push(kamusPegon[lower]);
+      }else{
+        hasil.push(transliterasiHuruf(token));
       }
     }
 
-    // cek 1 kata
-    if(kamusPegon[lower]){
-      hasil.push(kamusPegon[lower]);
-    }else{
-      hasil.push(transliterasiHuruf(token));
-    }
-  }
+    hasilAkhir.push(hasil.join(" "));
+  });
 
-  return hasil.join(" ");
+  return hasilAkhir.join("\n"); // 🔥 gabungkan kembali pakai ENTER
 }
-
 /* =======================
    EVENT
 ======================= */
