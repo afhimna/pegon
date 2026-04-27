@@ -128,49 +128,28 @@ input.addEventListener("keydown", function(e){
 /* =======================
    TRANSLITERASI UTAMA
 ======================= */
-function transliterasi(teks){
-  const tokens = teks.match(/[a-zA-Z'-]+|[.,?!]/g) || [];
-  let hasil = [];
+function transliterasiHuruf(kata){
+  let teks = kata.toLowerCase();
 
-  for(let i=0;i<tokens.length;i++){
-    let token = tokens[i];
+  // aturan khusus dulu
+  aturanHuruf.forEach(rule=>{
+    teks = teks.replace(rule.latin, rule.pegon);
+  });
 
-    // tanda baca
-    if(/[.,?!]/.test(token)){
-      hasil.push(token);
+  let hasil = "";
+  for(let char of teks){
+
+    // 🚨 JIKA SUDAH HURUF ARAB → JANGAN DIUBAH
+    if(/[\u0600-\u06FF]/.test(char)){
+      hasil += char;
       continue;
     }
 
-    let lower = token
-  .toLowerCase()
-  .trim()
-  .replace(/\s+/g, ' ')
-  .replace(/[.,?!]/g, '');
-
-    // 🔥 cek 2 kata
-    if(i < tokens.length-1){
-      let next = tokens[i+1];
-      if(!/[.,?!]/.test(next)){
-        let gabung = (token + " " + next).toLowerCase();
-        if(kamusPegon[gabung]){
-          hasil.push(kamusPegon[gabung]);
-          i++;
-          continue;
-        }
-      }
-    }
-
-    // cek 1 kata
-    if(kamusPegon[lower]){
-      hasil.push(kamusPegon[lower]);
-    }else{
-      hasil.push(transliterasiHuruf(token));
-    }
+    hasil += hurufMap[char] || char;
   }
 
-  return hasil.join(" ");
+  return hasil;
 }
-
 /* =======================
    EVENT
 ======================= */
