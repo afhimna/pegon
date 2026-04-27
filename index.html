@@ -51,11 +51,12 @@ footer{margin-top:auto;color:#999;font-size:.9rem}
 <footer>© 2025 • Pegon Engine</footer>
 
 <script>
-const URL_KAMUS = 'https://arsyad36.github.io/pegon/pegon.json';
+const URL_KAMUS = 'pegon.json';
 
 let kamusPegon = {};
 const btn = document.getElementById("btnConvert");
 const output = document.getElementById("output");
+const input = document.getElementById("inputText");
 
 /* =======================
    LOAD KAMUS
@@ -66,14 +67,14 @@ async function loadKamus(){
     const data = await res.json();
 
     data.forEach(item=>{
-  const latin = item["Kata Latin"]
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, ' ') // rapikan spasi
-    .replace(/[.,?!]/g, '');
+      const latin = item["Kata Latin"]
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g,' ')
+        .replace(/[.,?!]/g,'');
 
-  kamusPegon[latin] = item["Aksara Pegon"];
-});
+      kamusPegon[latin] = item["Aksara Pegon"];
+    });
 
     btn.disabled = false;
     btn.textContent = "Ubah ke Pegon";
@@ -101,7 +102,7 @@ const hurufMap = {
 };
 
 /* =======================
-   KONVERSI HURUF
+   FALLBACK HURUF
 ======================= */
 function transliterasiHuruf(kata){
   let teks = kata.toLowerCase();
@@ -112,34 +113,8 @@ function transliterasiHuruf(kata){
 
   let hasil = "";
   for(let char of teks){
-    hasil += hurufMap[char] || char;
-  }
-  return hasil;
-}
-const input = document.getElementById("inputText");
 
-input.addEventListener("keydown", function(e){
-  if(e.key === "Enter" && !e.shiftKey){
-    e.preventDefault(); // cegah enter bikin baris baru
-    btn.click(); // jalankan tombol convert
-  }
-});
-
-/* =======================
-   TRANSLITERASI UTAMA
-======================= */
-function transliterasiHuruf(kata){
-  let teks = kata.toLowerCase();
-
-  // aturan khusus dulu
-  aturanHuruf.forEach(rule=>{
-    teks = teks.replace(rule.latin, rule.pegon);
-  });
-
-  let hasil = "";
-  for(let char of teks){
-
-    // 🚨 JIKA SUDAH HURUF ARAB → JANGAN DIUBAH
+    // kalau sudah huruf arab, jangan diubah
     if(/[\u0600-\u06FF]/.test(char)){
       hasil += char;
       continue;
@@ -150,15 +125,78 @@ function transliterasiHuruf(kata){
 
   return hasil;
 }
+
+/* =======================
+   TRANSLITERASI UTAMA
+======================= */
+function transliterasi(teks){
+  const tokens = teks.match(/[a-zA-Z'-]+|[.,?!]/g) || [];
+  let hasil = [];
+
+  for(let i=0;i<tokens.length;i++){
+    let token = tokens[i];
+
+    // tanda baca
+    if(/[.,?!]/.test(token)){
+      hasil.push(token);
+      continue;
+    }
+
+    let lower = token
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g,' ')
+      .replace(/[.,?!]/g,'');
+
+    // 🔥 cek 2 kata (bigram)
+    if(i < tokens.length-1){
+      let next = tokens[i+1];
+      if(!/[.,?!]/.test(next)){
+        let gabung = (token + " " + next)
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g,' ')
+          .replace(/[.,?!]/g,'');
+
+        if(kamusPegon[gabung]){
+          hasil.push(kamusPegon[gabung]);
+          i++;
+          continue;
+        }
+      }
+    }
+
+    // cek 1 kata
+    if(kamusPegon[lower]){
+      hasil.push(kamusPegon[lower]);
+    }else{
+      hasil.push(transliterasiHuruf(token));
+    }
+  }
+
+  return hasil.join(" ");
+}
+
 /* =======================
    EVENT
 ======================= */
 btn.onclick = ()=>{
-  const teks = inputText.value.trim();
+  const teks = input.value.trim();
   if(!teks) return;
   output.textContent = transliterasi(teks);
 };
 
+// ENTER = convert
+input.addEventListener("keydown", function(e){
+  if(e.key === "Enter" && !e.shiftKey){
+    e.preventDefault();
+    btn.click();
+  }
+});
+
+/* =======================
+   INIT
+======================= */
 loadKamus();
 </script>
 
