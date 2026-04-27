@@ -66,12 +66,14 @@ async function loadKamus(){
     const data = await res.json();
 
     data.forEach(item=>{
-      const latin = item["Kata Latin"]
-  .toLowerCase()
-  .trim()
-  .replace(/[.,?!]/g, '');
-      kamusPegon[latin] = item["Aksara Pegon"];
-    });
+  const latin = item["Kata Latin"]
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ' ') // rapikan spasi
+    .replace(/[.,?!]/g, '');
+
+  kamusPegon[latin] = item["Aksara Pegon"];
+});
 
     btn.disabled = false;
     btn.textContent = "Ubah ke Pegon";
@@ -142,6 +144,7 @@ function transliterasi(teks){
     let lower = token
   .toLowerCase()
   .trim()
+  .replace(/\s+/g, ' ')
   .replace(/[.,?!]/g, '');
 
     // 🔥 cek 2 kata
