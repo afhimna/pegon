@@ -3,79 +3,298 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
 <title>Transliterasi Pegon</title>
+ 
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
 body{
-  background:#f9f9f9;
+  background:linear-gradient(135deg,#0f172a,#172554,#0f766e);
   min-height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding:2rem 1rem
+  padding:3rem 1rem 2rem;
+  color:#e2e8f0;
 }
-h1{margin-bottom:1rem;color:#555;letter-spacing:.1em}
+
+/* =======================
+   JUDUL
+======================= */
+
+h1{
+  margin-bottom:1.8rem;
+  color:#f8fafc;
+  font-size:2rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-align:center;
+  text-shadow:0 4px 15px rgba(0,0,0,.25);
+}
+
+/* =======================
+   INPUT
+======================= */
+
 textarea{
-  width:90vw;max-width:700px;height:160px;
-  padding:1rem;border-radius:10px;
-  border:1.5px solid #ccc;font-size:1.1rem
+  width:90vw;
+  max-width:700px;
+  height:170px;
+  padding:1.2rem 1.3rem;
+  border-radius:18px;
+  border:1px solid rgba(148,163,184,.3);
+  background:rgba(15,23,42,.75);
+  font-size:1.1rem;
+  line-height:1.6;
+  color:#e2e8f0;
+  outline:none;
+  resize:vertical;
+  box-shadow:0 8px 25px rgba(0,0,0,.25);
+  transition:all .25s ease;
 }
+
+textarea::placeholder{
+  color:rgba(226,232,240,.5);
+}
+
+textarea:focus{
+  border-color:#14b8a6;
+  box-shadow:
+    0 0 0 4px rgba(20,184,166,.15),
+    0 10px 30px rgba(0,0,0,.3);
+}
+
+/* =======================
+   SEMUA BUTTON
+======================= */
+
 button{
-  margin-top:1rem;padding:.8rem 2.5rem;
-  border:none;border-radius:30px;
-  background:#8ab6d6;color:#fff;
-  font-size:1.1rem;font-weight:600;
-  cursor:pointer
+  margin-top:1rem;
+  padding:.8rem 2.4rem;
+  border:none;
+  border-radius:50px;
+  background:linear-gradient(135deg,#14b8a6,#0ea5e9);
+  color:#fff;
+  font-size:1rem;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(14,165,233,.25);
+  transition:all .25s ease;
 }
-button:disabled{opacity:.6;cursor:not-allowed}
+
+button:hover{
+  transform:translateY(-3px);
+  background:linear-gradient(135deg,#2dd4bf,#38bdf8);
+  box-shadow:0 10px 25px rgba(14,165,233,.4);
+}
+
+button:active{
+  transform:translateY(0);
+  box-shadow:0 4px 10px rgba(14,165,233,.25);
+}
+
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+
 #output{
-  margin-top:2rem;width:90vw;max-width:700px;
-  min-height:140px;padding:1rem;
-  border-radius:14px;background:#fff;
-  font-size:1.9rem;direction:rtl;
-  white-space:pre-wrap;letter-spacing:.08em
+  margin-top:2rem;
+  width:90vw;
+  max-width:700px;
+  min-height:150px;
+  padding:1.5rem;
+  border-radius:20px;
+  background:rgba(248,250,252,.97);
+  color:#172554;
+  border:1px solid rgba(255,255,255,.2);
+  font-size:2rem;
+  line-height:2;
+  direction:rtl;
+  text-align:right;
+  white-space:pre-wrap;
+  word-wrap:break-word;
+  letter-spacing:.08em;
+  font-family:"Scheherazade New",serif;
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.25);
 }
-footer{margin-top:auto;color:#999;font-size:.9rem}
+
+#btnCopy{
+  padding:.65rem 2rem;
+  font-size:.95rem;
+  background:linear-gradient(135deg,#0f766e,#0891b2);
+}
+
+#btnCopy:hover{
+  background:linear-gradient(135deg,#14b8a6,#06b6d4);
+}
+
+@media(max-width:600px){
+
+  body{
+    padding:2rem 1rem;
+  }
+
+  h1{
+    font-size:1.6rem;
+    margin-bottom:1.3rem;
+  }
+
+  textarea{
+    width:100%;
+    height:150px;
+    font-size:1rem;
+  }
+
+  #output{
+    width:100%;
+    min-height:140px;
+    padding:1.2rem;
+    font-size:1.8rem;
+  }
+
+  button{
+    width:auto;
+    padding:.75rem 2rem;
+  }
+}
+.social-container {
+  margin-top:40px;
+  text-align:center;
+  opacity:0;
+  transform:translateY(40px);
+  transition:.9s ease;
+}
+
+.social-container.show {
+  opacity:1;
+  transform:translateY(0);
+}
+
+.social-container p {
+  font-size:13px;
+  color:#bbb;
+  margin-bottom:14px;
+}
+
+.social-icons {
+  display:flex;
+  justify-content:center;
+  gap:24px;
+}
+
+.social-icon {
+  width:52px;
+  height:52px;
+  padding:6px;
+  border-radius:14px;
+  background:rgba(255,255,255,.03);
+  transition:.4s ease;
+}
+
+.social-icon:hover {
+  transform:scale(1.15) translateY(-4px);
+  box-shadow:0 0 18px rgba(255,255,255,.2);
+}
+
+.support-text {
+  margin-top:18px;
+  font-size:13px;
+  color:#ccc;
+}
+
+.support-text a {
+  color:#fff;
+  font-weight:500;
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.4);
+}
+
+.copyright {
+  margin-top:14px;
+  font-size:11px;
+  letter-spacing:.6px;
+  color:rgba(255,255,255,.35);
+}
+
 </style>
 </head>
-
+ 
 <body>
-
+ 
 <h1>Transliterasi Pegon</h1>
-
+ 
 <textarea id="inputText" placeholder="Masukkan teks latin..."></textarea>
 <button id="btnConvert" disabled>Memuat kamus...</button>
-
+ 
 <div id="output"></div>
-<footer>© 2025 • Pegon Engine</footer>
 
+<button id="btnCopy">Copy</button>
+
+<div class="social-container">
+  <p>Temukan lebih banyak, info lebih lanjut hubungi:</p>
+
+  <div class="social-icons">
+    <a href="https://www.instagram.com/umarhamdan_a/" target="_blank">
+      <img
+        src="https://res.cloudinary.com/dmecuyazc/image/upload/v1766738130/ig_nhlx8u.png"
+        class="social-icon"
+        alt="Instagram"
+      >
+    </a>
+  </div>
+
+  <div class="support-text">
+    Berkenan mendukung kami?
+    <a href="https://afhimna.github.io/share" target="_blank">
+      Klik di sini
+    </a>.
+  </div>
+
+  <div class="copyright">
+    © 2025 Afhimna Dev. All Rights Reserved.
+  </div>
+</div>
+ 
 <script>
 const URL_KAMUS = 'pegon.json';
-
+ 
 let kamusPegon = {};
 const btn = document.getElementById("btnConvert");
 const output = document.getElementById("output");
 const input = document.getElementById("inputText");
 
-/* =======================
-   LOAD KAMUS
-======================= */
+const socialContainer = document.querySelector(".social-container");
+
+setTimeout(()=>{
+  socialContainer.classList.add("show");
+},300);
+
 async function loadKamus(){
   try{
     const res = await fetch(URL_KAMUS);
     const data = await res.json();
-
+ 
     data.forEach(item=>{
       const latin = item["Kata Latin"]
         .toLowerCase()
         .trim()
         .replace(/\s+/g,' ')
         .replace(/[.,?!]/g,'');
-
+ 
       kamusPegon[latin] = item["Aksara Pegon"];
     });
-
+ 
     btn.disabled = false;
     btn.textContent = "Ubah ke Pegon";
     output.textContent = "Kamus siap (" + Object.keys(kamusPegon).length + " kata)";
@@ -84,7 +303,7 @@ async function loadKamus(){
     console.error(e);
   }
 }
-
+ 
 /* =======================
    ATURAN HURUF
 ======================= */
@@ -92,7 +311,7 @@ const aturanHuruf = [
   { latin:/ng/gi, pegon:"ڠ" },
   { latin:/ny/gi, pegon:"ۑ" }
 ];
-
+ 
 const hurufMap = {
   a:"ا", b:"ب", c:"چ", d:"د", e:"ٓ",
   f:"ف", g:"ڮ", h:"ح", i:"ي", j:"ج",
@@ -100,58 +319,102 @@ const hurufMap = {
   p:"ڤ", q:"ق", r:"ر", s:"س", t:"ت",
   u:"ع", v:"ف", w:"و", y:"ي", z:"ز"
 };
-
+ 
 /* =======================
    FALLBACK HURUF
 ======================= */
 function transliterasiHuruf(kata){
   let teks = kata.toLowerCase();
 
+  // Pisahkan "di" dari bagian kata setelahnya
+  teks = teks.replace(/^di/, "di ");
+ 
   aturanHuruf.forEach(rule=>{
     teks = teks.replace(rule.latin, rule.pegon);
   });
-
+ 
   let hasil = "";
-  for(let char of teks){
-
+for(let i = 0; i < teks.length; i++){
+  let char = teks[i];
     // kalau sudah huruf arab, jangan diubah
     if(/[\u0600-\u06FF]/.test(char)){
       hasil += char;
       continue;
     }
-
-    hasil += hurufMap[char] || char;
+ 
+// Aturan khusus huruf U
+if(char === "u"){
+  if(i === 0){
+    hasil += "أُو";
+  }else{
+    hasil += "و";
   }
-
-  return hasil;
+  continue;
 }
 
+// Aturan khusus huruf I
+if(char === "i"){
+  if(i === 0){
+    hasil += "إي";
+  }else{
+    hasil += "ي";
+  }
+  continue;
+}
+
+// Aturan khusus huruf A
+if(char === "a"){
+  if(i === 0){
+    hasil += "أ";
+  }else{
+    hasil += "ا";
+  }
+  continue;
+}
+
+// Aturan khusus huruf E
+if(char === "e"){
+  if(i === 0){
+    hasil += "آي";
+  }else{
+    hasil += "ٓ";
+  }
+  continue;
+}
+    hasil += hurufMap[char] || char;
+  }
+ 
+  return hasil;
+}
+ 
 /* =======================
    TRANSLITERASI UTAMA
 ======================= */
 function transliterasi(teks){
-  const lines = teks.split("\n"); // 🔥 pecah per baris
-  let hasilAkhir = [];
+  teks = teks.replace(/\s{2,}/g, " ");
 
+  const lines = teks.split("\n");
+  let hasilAkhir = [];
+ 
   lines.forEach(line=>{
     const tokens = line.match(/[a-zA-Z'-]+|[.,?!]/g) || [];
     let hasil = [];
-
+ 
     for(let i=0;i<tokens.length;i++){
       let token = tokens[i];
-
+ 
       // tanda baca
       if(/[.,?!]/.test(token)){
         hasil.push(token);
         continue;
       }
-
+ 
       let lower = token
         .toLowerCase()
         .trim()
         .replace(/\s+/g,' ')
         .replace(/[.,?!]/g,'');
-
+ 
       // 🔥 cek 2 kata
       if(i < tokens.length-1){
         let next = tokens[i+1];
@@ -161,7 +424,7 @@ function transliterasi(teks){
             .trim()
             .replace(/\s+/g,' ')
             .replace(/[.,?!]/g,'');
-
+ 
           if(kamusPegon[gabung]){
             hasil.push(kamusPegon[gabung]);
             i++;
@@ -169,7 +432,7 @@ function transliterasi(teks){
           }
         }
       }
-
+ 
       // cek 1 kata
       if(kamusPegon[lower]){
         hasil.push(kamusPegon[lower]);
@@ -177,10 +440,10 @@ function transliterasi(teks){
         hasil.push(transliterasiHuruf(token));
       }
     }
-
+ 
     hasilAkhir.push(hasil.join(" "));
   });
-
+ 
   return hasilAkhir.join("\n"); // 🔥 gabungkan kembali pakai ENTER
 }
 /* =======================
@@ -192,6 +455,28 @@ btn.onclick = ()=>{
   output.textContent = transliterasi(teks);
 };
 
+const btnCopy = document.getElementById("btnCopy");
+
+btnCopy.onclick = async ()=>{
+  const teks = output.textContent;
+
+  if(!teks) return;
+
+  try{
+    await navigator.clipboard.writeText(teks);
+
+    const teksAsli = btnCopy.textContent;
+    btnCopy.textContent = "Tersalin ✓";
+
+    setTimeout(()=>{
+      btnCopy.textContent = teksAsli;
+    },1500);
+
+  }catch(e){
+    console.error("Gagal menyalin:",e);
+  }
+};
+ 
 // ENTER = convert
 input.addEventListener("keydown", function(e){
   if(e.key === "Enter" && !e.shiftKey){
@@ -199,12 +484,12 @@ input.addEventListener("keydown", function(e){
     btn.click();
   }
 });
-
+ 
 /* =======================
    INIT
 ======================= */
 loadKamus();
 </script>
-
+ 
 </body>
 </html>
