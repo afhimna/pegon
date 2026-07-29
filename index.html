@@ -130,6 +130,7 @@ button:disabled{
 }
 
 #btnCopy{
+  display:none;
   padding:.65rem 2rem;
   font-size:.95rem;
   background:linear-gradient(135deg,#0f766e,#0891b2);
@@ -226,7 +227,28 @@ button:disabled{
   letter-spacing:.6px;
   color:rgba(255,255,255,.35);
 }
+.button-group{
+  margin-top:1rem;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
 
+#btnClear{
+  background:linear-gradient(135deg,#ef4444,#dc2626);
+}
+
+#btnClear:hover{
+  background:linear-gradient(135deg,#f87171,#ef4444);
+}
+#btnPaste{
+  background:linear-gradient(135deg,#8b5cf6,#6366f1);
+}
+
+#btnPaste:hover{
+  background:linear-gradient(135deg,#a78bfa,#818cf8);
+}
 </style>
 </head>
  
@@ -235,7 +257,11 @@ button:disabled{
 <h1>Transliterasi Pegon</h1>
  
 <textarea id="inputText" placeholder="Masukkan teks latin..."></textarea>
-<button id="btnConvert" disabled>Memuat kamus...</button>
+<div class="button-group">
+  <button id="btnConvert" disabled>Memuat kamus...</button>
+  <button id="btnClear">🗑 Hapus</button>
+  <button id="btnPaste">📋 Tempel</button>
+</div>
  
 <div id="output"></div>
 
@@ -273,6 +299,9 @@ let kamusPegon = {};
 const btn = document.getElementById("btnConvert");
 const output = document.getElementById("output");
 const input = document.getElementById("inputText");
+const btnCopy = document.getElementById("btnCopy");
+const btnClear = document.getElementById("btnClear");
+const btnPaste = document.getElementById("btnPaste");
 
 const socialContainer = document.querySelector(".social-container");
 
@@ -304,9 +333,7 @@ async function loadKamus(){
   }
 }
  
-/* =======================
-   ATURAN HURUF
-======================= */
+
 const aturanHuruf = [
   { latin:/ng/gi, pegon:"ڠ" },
   { latin:/ny/gi, pegon:"ۑ" }
@@ -320,13 +347,10 @@ const hurufMap = {
   u:"ع", v:"ف", w:"و", y:"ي", z:"ز"
 };
  
-/* =======================
-   FALLBACK HURUF
-======================= */
+
 function transliterasiHuruf(kata){
   let teks = kata.toLowerCase();
 
-  // Pisahkan "di" dari bagian kata setelahnya
   teks = teks.replace(/^di/, "di ");
  
   aturanHuruf.forEach(rule=>{
@@ -336,13 +360,11 @@ function transliterasiHuruf(kata){
   let hasil = "";
 for(let i = 0; i < teks.length; i++){
   let char = teks[i];
-    // kalau sudah huruf arab, jangan diubah
     if(/[\u0600-\u06FF]/.test(char)){
       hasil += char;
       continue;
     }
  
-// Aturan khusus huruf U
 if(char === "u"){
   if(i === 0){
     hasil += "أُو";
@@ -352,7 +374,6 @@ if(char === "u"){
   continue;
 }
 
-// Aturan khusus huruf I
 if(char === "i"){
   if(i === 0){
     hasil += "إي";
@@ -362,7 +383,6 @@ if(char === "i"){
   continue;
 }
 
-// Aturan khusus huruf A
 if(char === "a"){
   if(i === 0){
     hasil += "أ";
@@ -372,7 +392,24 @@ if(char === "a"){
   continue;
 }
 
-// Aturan khusus huruf E
+if(char === "o"){
+  if(i === 0){
+    hasil += "أَوْ";
+  }else{
+    hasil += "وْ";
+  }
+  continue;
+}
+
+if(char === "h"){
+  if(i === 0){
+    hasil += "ح";
+  }else{
+    hasil += "ه";
+  }
+  continue;
+}
+
 if(char === "e"){
   if(i === 0){
     hasil += "آي";
@@ -387,9 +424,6 @@ if(char === "e"){
   return hasil;
 }
  
-/* =======================
-   TRANSLITERASI UTAMA
-======================= */
 function transliterasi(teks){
   teks = teks.replace(/\s{2,}/g, " ");
 
@@ -403,7 +437,7 @@ function transliterasi(teks){
     for(let i=0;i<tokens.length;i++){
       let token = tokens[i];
  
-      // tanda baca
+      
       if(/[.,?!]/.test(token)){
         hasil.push(token);
         continue;
@@ -433,7 +467,7 @@ function transliterasi(teks){
         }
       }
  
-      // cek 1 kata
+      
       if(kamusPegon[lower]){
         hasil.push(kamusPegon[lower]);
       }else{
@@ -443,41 +477,53 @@ function transliterasi(teks){
  
     hasilAkhir.push(hasil.join(" "));
   });
- 
-  return hasilAkhir.join("\n"); // 🔥 gabungkan kembali pakai ENTER
+  return hasilAkhir.join("\n");
 }
-/* =======================
-   EVENT
-======================= */
+
 btn.onclick = ()=>{
   const teks = input.value.trim();
   if(!teks) return;
   output.textContent = transliterasi(teks);
+  
+  btnCopy.style.display = "inline-block";
+};
+btnClear.onclick = ()=>{
+  input.value = "";
+  output.textContent = "";
+  btnCopy.style.display = "none";
+  input.focus();
 };
 
+btnPaste.onclick = async ()=>{
+  try{
+    const teks = await navigator.clipboard.readText();
+    input.value = teks;
+    input.focus();
+    input.setSelectionRange(
+      input.value.length,
+      input.value.length
+    );
+  }catch(err){
+    alert("Clipboard tidak dapat diakses.");
+  }
+};
 const btnCopy = document.getElementById("btnCopy");
 
 btnCopy.onclick = async ()=>{
   const teks = output.textContent;
-
   if(!teks) return;
-
   try{
     await navigator.clipboard.writeText(teks);
-
     const teksAsli = btnCopy.textContent;
     btnCopy.textContent = "Tersalin ✓";
-
     setTimeout(()=>{
       btnCopy.textContent = teksAsli;
     },1500);
-
   }catch(e){
     console.error("Gagal menyalin:",e);
   }
 };
  
-// ENTER = convert
 input.addEventListener("keydown", function(e){
   if(e.key === "Enter" && !e.shiftKey){
     e.preventDefault();
@@ -485,9 +531,7 @@ input.addEventListener("keydown", function(e){
   }
 });
  
-/* =======================
-   INIT
-======================= */
+
 loadKamus();
 </script>
  
