@@ -402,10 +402,10 @@ if(char === "o"){
 }
 
 if(char === "h"){
-  if(i === 0){
-    hasil += "ح";
-  }else{
+  if(i === teks.length - 1){
     hasil += "ه";
+  }else{
+    hasil += "ح";
   }
   continue;
 }
@@ -507,7 +507,7 @@ btnPaste.onclick = async ()=>{
     alert("Clipboard tidak dapat diakses.");
   }
 };
-const btnCopy = document.getElementById("btnCopy");
+
 
 btnCopy.onclick = async ()=>{
   const teks = output.textContent;
