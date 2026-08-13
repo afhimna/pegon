@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
 <title>Transliterasi Pegon</title>
  
@@ -16,249 +17,578 @@
 }
 
 body{
-  background:linear-gradient(135deg,#0f172a,#172554,#0f766e);
   min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:3rem 1rem 2rem;
-  color:#e2e8f0;
+  padding:50px 20px 30px;
+  color:#e5e7eb;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(20,184,166,.12), transparent 30%),
+    radial-gradient(circle at 80% 80%, rgba(14,165,233,.10), transparent 30%),
+    #070b14;
 }
 
-/* =======================
-   JUDUL
-======================= */
+/* =========================
+   CONTAINER
+========================= */
+
+body > *{
+  position:relative;
+  z-index:1;
+}
 
 h1{
-  margin-bottom:1.8rem;
-  color:#f8fafc;
+  margin-bottom:8px;
+  text-align:center;
   font-size:2rem;
   font-weight:700;
-  letter-spacing:.08em;
-  text-align:center;
-  text-shadow:0 4px 15px rgba(0,0,0,.25);
+  letter-spacing:.04em;
+  color:#f8fafc;
 }
 
-/* =======================
+h1::after{
+  content:"Transliterasi Latin → Pegon";
+  display:block;
+  margin-top:8px;
+  font-size:.78rem;
+  font-weight:400;
+  letter-spacing:.08em;
+  color:#94a3b8;
+}
+
+/* =========================
    INPUT
-======================= */
+========================= */
 
 textarea{
+  display:block;
   width:90vw;
   max-width:700px;
-  height:170px;
-  padding:1.2rem 1.3rem;
-  border-radius:18px;
-  border:1px solid rgba(148,163,184,.3);
-  background:rgba(15,23,42,.75);
-  font-size:1.1rem;
-  line-height:1.6;
-  color:#e2e8f0;
+  height:180px;
+  margin:35px auto 0;
+  padding:20px;
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+
+  background:rgba(255,255,255,.045);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  color:#f1f5f9;
+  font-size:1.05rem;
+  line-height:1.7;
+
   outline:none;
   resize:vertical;
-  box-shadow:0 8px 25px rgba(0,0,0,.25);
-  transition:all .25s ease;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.04);
+
+  transition:.25s ease;
 }
 
 textarea::placeholder{
-  color:rgba(226,232,240,.5);
+  color:#64748b;
 }
 
 textarea:focus{
-  border-color:#14b8a6;
+  border-color:rgba(45,212,191,.45);
+
   box-shadow:
-    0 0 0 4px rgba(20,184,166,.15),
-    0 10px 30px rgba(0,0,0,.3);
+    0 0 0 3px rgba(20,184,166,.08),
+    0 20px 50px rgba(0,0,0,.3);
 }
 
-/* =======================
-   SEMUA BUTTON
-======================= */
+/* =========================
+   BUTTON GROUP
+========================= */
+
+.button-group{
+  width:90vw;
+  max-width:700px;
+  margin:14px auto 0;
+
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+}
 
 button{
-  margin-top:1rem;
-  padding:.8rem 2.4rem;
-  border:none;
-  border-radius:50px;
-  background:linear-gradient(135deg,#14b8a6,#0ea5e9);
-  color:#fff;
-  font-size:1rem;
-  font-weight:600;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+
+  padding:10px 17px;
+
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+
+  color:#cbd5e1;
+  font-size:.88rem;
+  font-weight:500;
+
   cursor:pointer;
-  box-shadow:0 6px 18px rgba(14,165,233,.25);
-  transition:all .25s ease;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.18);
+
+  transition:.2s ease;
 }
 
 button:hover{
-  transform:translateY(-3px);
-  background:linear-gradient(135deg,#2dd4bf,#38bdf8);
-  box-shadow:0 10px 25px rgba(14,165,233,.4);
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.09);
+  color:#fff;
+  border-color:rgba(255,255,255,.14);
 }
 
 button:active{
   transform:translateY(0);
-  box-shadow:0 4px 10px rgba(14,165,233,.25);
 }
 
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-  transform:none;
-  box-shadow:none;
+/* =========================
+   HAPUS
+========================= */
+
+#btnClear{
+  background:rgba(239,68,68,.08);
+  color:#fca5a5;
 }
+
+#btnClear:hover{
+  background:rgba(239,68,68,.14);
+  color:#fecaca;
+}
+
+/* =========================
+   TEMPEL
+========================= */
+
+#btnPaste{
+  background:rgba(99,102,241,.09);
+  color:#c7d2fe;
+}
+
+#btnPaste:hover{
+  background:rgba(99,102,241,.15);
+  color:#e0e7ff;
+}
+
+/* =========================
+   OUTPUT
+========================= */
 
 #output{
-  margin-top:2rem;
+  position:relative;
+
   width:90vw;
   max-width:700px;
-  min-height:150px;
-  padding:1.5rem;
-  border-radius:20px;
-  background:rgba(248,250,252,.97);
-  color:#172554;
-  border:1px solid rgba(255,255,255,.2);
-  font-size:2rem;
-  line-height:2;
+  min-height:180px;
+
+  margin:30px auto 0;
+  padding:25px;
+
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.025)
+    );
+
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+
+  color:#f8fafc;
+
+  font-family:"Scheherazade New",serif;
+  font-size:2.1rem;
+  line-height:1.5;
+
   direction:rtl;
   text-align:right;
+
   white-space:pre-wrap;
   word-wrap:break-word;
-  letter-spacing:.08em;
-  font-family:"Scheherazade New",serif;
+
   box-shadow:
-    0 10px 35px rgba(0,0,0,.25);
+    0 20px 60px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(255,255,255,.05);
 }
+
+/* label PEGON */
+
+#output::before{
+  content:"PEGON";
+  position:absolute;
+  top:13px;
+  left:18px;
+
+  font-family:Arial,sans-serif;
+  font-size:.65rem;
+  font-weight:600;
+  letter-spacing:.14em;
+
+  color:#64748b;
+}
+
+/* =========================
+   COPY
+========================= */
 
 #btnCopy{
   display:none;
-  padding:.65rem 2rem;
-  font-size:.95rem;
-  background:linear-gradient(135deg,#0f766e,#0891b2);
+
+  width:auto;
+  min-width:110px;
+
+  margin:12px auto 0;
+  padding:9px 20px;
+
+  background:rgba(20,184,166,.09);
+  color:#5eead4;
+
+  border:1px solid rgba(20,184,166,.15);
+  border-radius:12px;
+
+  text-align:center;
 }
 
 #btnCopy:hover{
-  background:linear-gradient(135deg,#14b8a6,#06b6d4);
+  background:rgba(20,184,166,.15);
+  color:#99f6e4;
 }
+/* =========================
+   SOCIAL
+========================= */
 
-@media(max-width:600px){
+.social-container{
+  width:90vw;
+  max-width:700px;
 
-  body{
-    padding:2rem 1rem;
-  }
+  margin:55px auto 0;
 
-  h1{
-    font-size:1.6rem;
-    margin-bottom:1.3rem;
-  }
-
-  textarea{
-    width:100%;
-    height:150px;
-    font-size:1rem;
-  }
-
-  #output{
-    width:100%;
-    min-height:140px;
-    padding:1.2rem;
-    font-size:1.8rem;
-  }
-
-  button{
-    width:auto;
-    padding:.75rem 2rem;
-  }
-}
-.social-container {
-  margin-top:40px;
   text-align:center;
+
   opacity:0;
-  transform:translateY(40px);
-  transition:.9s ease;
+  transform:translateY(20px);
+
+  transition:.8s ease;
 }
 
-.social-container.show {
+.social-container.show{
   opacity:1;
   transform:translateY(0);
 }
 
-.social-container p {
-  font-size:13px;
-  color:#bbb;
-  margin-bottom:14px;
+.social-container p{
+  margin-bottom:15px;
+
+  font-size:12px;
+  color:#64748b;
 }
 
-.social-icons {
+.social-icons{
   display:flex;
   justify-content:center;
-  gap:24px;
+  gap:15px;
 }
 
-.social-icon {
-  width:52px;
-  height:52px;
-  padding:6px;
-  border-radius:14px;
-  background:rgba(255,255,255,.03);
-  transition:.4s ease;
+.social-icon{
+  width:42px;
+  height:42px;
+
+  padding:7px;
+
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+
+  background:rgba(255,255,255,.035);
+
+  transition:.25s ease;
 }
 
-.social-icon:hover {
-  transform:scale(1.15) translateY(-4px);
-  box-shadow:0 0 18px rgba(255,255,255,.2);
+.social-icon:hover{
+  transform:translateY(-3px);
+  background:rgba(255,255,255,.07);
 }
 
-.support-text {
+.support-text{
   margin-top:18px;
-  font-size:13px;
-  color:#ccc;
+  font-size:12px;
+  color:#64748b;
 }
 
-.support-text a {
-  color:#fff;
-  font-weight:500;
+.support-text a{
+  color:#94a3b8;
   text-decoration:none;
-  border-bottom:1px solid rgba(255,255,255,.4);
+  border-bottom:1px solid rgba(148,163,184,.3);
 }
 
-.copyright {
-  margin-top:14px;
-  font-size:11px;
-  letter-spacing:.6px;
-  color:rgba(255,255,255,.35);
+.copyright{
+  margin-top:15px;
+  font-size:10px;
+  letter-spacing:.05em;
+  color:#334155;
 }
-.button-group{
-  margin-top:1rem;
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+  body{
+    padding:30px 14px 25px;
+  }
+
+  h1{
+    font-size:1.55rem;
+  }
+
+  h1::after{
+    font-size:.68rem;
+  }
+
+  textarea{
+    width:100%;
+    height:155px;
+    margin-top:28px;
+    padding:17px;
+    border-radius:18px;
+    font-size:1rem;
+  }
+
+  .button-group{
+    width:100%;
+    justify-content:flex-end;
+  }
+
+  button{
+    padding:9px 14px;
+    font-size:.82rem;
+  }
+
+  #output{
+    width:100%;
+    min-height:155px;
+    padding:22px 17px;
+
+    border-radius:20px;
+    font-size:1.85rem;
+  }
+
+  #btnCopy{
+    width:100%;
+  }
+
+  .social-container{
+    width:100%;
+    margin-top:40px;
+  }
+}
+/* =========================
+   THEME TOGGLE
+========================= */
+
+.header{
+  position:relative;
+
+  width:90vw;
+  max-width:700px;
+
+  margin:0 auto;
+
   display:flex;
-  gap:12px;
+  align-items:center;
   justify-content:center;
-  flex-wrap:wrap;
 }
 
-#btnClear{
-  background:linear-gradient(135deg,#ef4444,#dc2626);
+.title{
+  text-align:center;
 }
 
-#btnClear:hover{
-  background:linear-gradient(135deg,#f87171,#ef4444);
-}
-#btnPaste{
-  background:linear-gradient(135deg,#8b5cf6,#6366f1);
+.theme-toggle{
+  position:absolute;
+  left:0;
+  top:0;
+
+  width:42px;
+  height:42px;
+  padding:0;
+
+  margin:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+
+  font-size:1.05rem;
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+
+  transition:.25s ease;
 }
 
-#btnPaste:hover{
-  background:linear-gradient(135deg,#a78bfa,#818cf8);
+.theme-toggle:hover{
+  transform:rotate(15deg) scale(1.05);
+}
+/* =========================
+   LIGHT MODE
+========================= */
+
+body.light-mode{
+  color:#1e293b;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(20,184,166,.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(14,165,233,.08),
+      transparent 30%
+    ),
+    #eef2f7;
+}
+
+body.light-mode h1{
+  color:#0f172a;
+}
+
+body.light-mode h1::after{
+  color:#64748b;
+}
+
+body.light-mode textarea{
+  background:rgba(255,255,255,.55);
+  border-color:rgba(15,23,42,.08);
+
+  color:#1e293b;
+
+  box-shadow:
+    0 15px 40px rgba(15,23,42,.08),
+    inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+body.light-mode textarea::placeholder{
+  color:#94a3b8;
+}
+
+body.light-mode textarea:focus{
+  border-color:rgba(13,148,136,.35);
+
+  box-shadow:
+    0 0 0 3px rgba(20,184,166,.08),
+    0 20px 50px rgba(15,23,42,.10);
+}
+
+body.light-mode button{
+  background:rgba(255,255,255,.6);
+  border-color:rgba(15,23,42,.08);
+  color:#475569;
+
+  box-shadow:
+    0 8px 20px rgba(15,23,42,.06);
+}
+
+body.light-mode button:hover{
+  background:rgba(255,255,255,.85);
+  color:#0f172a;
+}
+
+body.light-mode #btnClear{
+  background:rgba(239,68,68,.07);
+  color:#dc2626;
+}
+
+body.light-mode #btnPaste{
+  background:rgba(99,102,241,.07);
+  color:#4f46e5;
+}
+
+body.light-mode #output{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.72),
+      rgba(255,255,255,.45)
+    );
+
+  border-color:rgba(15,23,42,.08);
+
+  color:#172554;
+
+  box-shadow:
+    0 20px 60px rgba(15,23,42,.10),
+    inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+body.light-mode #output::before{
+  color:#94a3b8;
+}
+
+body.light-mode #btnCopy{
+  background:rgba(20,184,166,.08);
+  color:#0f766e;
+}
+
+body.light-mode .social-container p,
+body.light-mode .support-text{
+  color:#64748b;
+}
+
+body.light-mode .social-icon{
+  background:rgba(255,255,255,.5);
+  border-color:rgba(15,23,42,.07);
+}
+
+body.light-mode .copyright{
+  color:#94a3b8;
+}
+#output.status-message{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+  direction:ltr;
+
+  font-family:"Inter",sans-serif;
+  font-size:1rem;
+  font-weight:500;
+  letter-spacing:.03em;
+  line-height:1.6;
+
+  color:#94a3b8;
 }
 </style>
 </head>
  
 <body>
  
-<h1>Transliterasi Pegon</h1>
+<div class="header">
+  <button id="btnTheme" class="theme-toggle" aria-label="Ganti tema">
+    ☀️
+  </button>
+
+  <div class="title">
+    <h1>Transliterasi Pegon</h1>
+  </div>
+</div>
  
 <textarea id="inputText" placeholder="Masukkan teks latin..."></textarea>
 <div class="button-group">
-  <button id="btnConvert" disabled>Memuat kamus...</button>
   <button id="btnClear">🗑 Hapus</button>
   <button id="btnPaste">📋 Tempel</button>
 </div>
@@ -296,7 +626,6 @@ button:disabled{
 const URL_KAMUS = 'pegon.json';
  
 let kamusPegon = {};
-const btn = document.getElementById("btnConvert");
 const output = document.getElementById("output");
 const input = document.getElementById("inputText");
 const btnCopy = document.getElementById("btnCopy");
@@ -309,30 +638,88 @@ setTimeout(()=>{
   socialContainer.classList.add("show");
 },300);
 
+const CACHE_KAMUS = "pegonKamusCache_v1";
+
+function prosesDataKamus(data){
+  kamusPegon = {};
+
+  data.forEach(item=>{
+    const latin = item["Kata Latin"]
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g,' ')
+      .replace(/[.,?!]/g,'');
+
+    kamusPegon[latin] = item["Aksara Pegon"];
+  });
+
+  return Object.keys(kamusPegon).length;
+}
+
 async function loadKamus(){
+
+  try{
+    const cache = localStorage.getItem(CACHE_KAMUS);
+
+    if(cache){
+      const dataCache = JSON.parse(cache);
+      const jumlah = prosesDataKamus(dataCache);
+
+      tampilkanPesan(
+  "Kamus offline siap (" + jumlah + " kata)"
+);
+    }
+  }catch(e){
+    console.warn("Cache kamus gagal:", e);
+  }
+
+
+  // =========================
+  // 2. COBA KAMUS ONLINE
+  // =========================
   try{
     const res = await fetch(URL_KAMUS);
+
+    if(!res.ok){
+      throw new Error("Kamus tidak dapat diakses");
+    }
+
     const data = await res.json();
- 
-    data.forEach(item=>{
-      const latin = item["Kata Latin"]
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g,' ')
-        .replace(/[.,?!]/g,'');
- 
-      kamusPegon[latin] = item["Aksara Pegon"];
-    });
- 
-    btn.disabled = false;
-    btn.textContent = "Ubah ke Pegon";
-    output.textContent = "Kamus siap (" + Object.keys(kamusPegon).length + " kata)";
+
+    const jumlah = prosesDataKamus(data);
+
+    // Simpan untuk penggunaan offline
+    localStorage.setItem(
+      CACHE_KAMUS,
+      JSON.stringify(data)
+    );
+
+    tampilkanPesan(
+  "Kamus online siap (" + jumlah + " kata)"
+);
+
   }catch(e){
-    output.textContent = "Gagal load kamus!";
-    console.error(e);
+
+    // Jika cache ada, tetap gunakan cache
+    if(Object.keys(kamusPegon).length > 0){
+
+      tampilkanPesan(
+  "Mode offline • kamus tersimpan digunakan"
+);
+
+    }else{
+
+      // Jika tidak ada cache juga,
+      // transliterasiHuruf() tetap bekerja
+      tampilkanPesan(
+  "Mode offline • transliterasi dasar aktif"
+);
+    }
+
+    console.warn("Kamus online gagal:", e);
   }
 }
- 
+
 
 const aturanHuruf = [
   { latin:/ng/gi, pegon:"ڠ" },
@@ -423,22 +810,53 @@ if(char === "e"){
  
   return hasil;
 }
+
+function konversiAngkaArabHindi(teks){
+  const angkaArabHindi = {
+    "0":"٠",
+    "1":"١",
+    "2":"٢",
+    "3":"٣",
+    "4":"٤",
+    "5":"٥",
+    "6":"٦",
+    "7":"٧",
+    "8":"٨",
+    "9":"٩"
+  };
+
+  return teks.replace(/[0-9]/g, angka => angkaArabHindi[angka]);
+}
+
+function konversiTandaBaca(teks){
+  return teks
+    .replace(/,/g, "،")
+    .replace(/;/g, "؛")
+    .replace(/\?/g, "؟");
+}
  
 function transliterasi(teks){
-  teks = teks.replace(/\s{2,}/g, " ");
+
+  teks = konversiAngkaArabHindi(teks);
+  teks = konversiTandaBaca(teks);
+
+  teks = teks
+  .split("\n")
+  .map(baris => baris.replace(/[ \t]{2,}/g, " "))
+  .join("\n");
 
   const lines = teks.split("\n");
   let hasilAkhir = [];
  
   lines.forEach(line=>{
-    const tokens = line.match(/[a-zA-Z'-]+|[.,?!]/g) || [];
+    const tokens = line.match(/[a-zA-Z0-9٠-٩'-]+|[،؛؟.,?!]/g) || [];
     let hasil = [];
  
     for(let i=0;i<tokens.length;i++){
       let token = tokens[i];
  
       
-      if(/[.,?!]/.test(token)){
+      if(/[،؛؟.,?!]/.test(token)){
         hasil.push(token);
         continue;
       }
@@ -452,12 +870,12 @@ function transliterasi(teks){
       // 🔥 cek 2 kata
       if(i < tokens.length-1){
         let next = tokens[i+1];
-        if(!/[.,?!]/.test(next)){
+        if(!/[،؛؟.,?!]/.test(next)){
           let gabung = (token + " " + next)
             .toLowerCase()
             .trim()
             .replace(/\s+/g,' ')
-            .replace(/[.,?!]/g,'');
+            .replace(/[،؛؟.,?!]/g,'');
  
           if(kamusPegon[gabung]){
             hasil.push(kamusPegon[gabung]);
@@ -480,13 +898,23 @@ function transliterasi(teks){
   return hasilAkhir.join("\n");
 }
 
-btn.onclick = ()=>{
-  const teks = input.value.trim();
-  if(!teks) return;
+input.addEventListener("input", ()=>{
+  const teks = input.value;
+
+  if(!teks.trim()){
+    output.textContent = "";
+    output.classList.remove("status-message");
+    btnCopy.style.display = "none";
+    return;
+  }
+
+  output.classList.remove("status-message");
+
   output.textContent = transliterasi(teks);
-  
   btnCopy.style.display = "inline-block";
-};
+});
+
+
 btnClear.onclick = ()=>{
   input.value = "";
   output.textContent = "";
@@ -511,26 +939,52 @@ btnPaste.onclick = async ()=>{
 
 btnCopy.onclick = async ()=>{
   const teks = output.textContent;
+
   if(!teks) return;
+
   try{
     await navigator.clipboard.writeText(teks);
+
     const teksAsli = btnCopy.textContent;
+
     btnCopy.textContent = "Tersalin ✓";
+
     setTimeout(()=>{
       btnCopy.textContent = teksAsli;
     },1500);
+
   }catch(e){
-    console.error("Gagal menyalin:",e);
+    console.error("Gagal menyalin:", e);
+    alert("Teks tidak dapat disalin. Silakan izinkan akses clipboard pada browser.");
   }
 };
  
-input.addEventListener("keydown", function(e){
-  if(e.key === "Enter" && !e.shiftKey){
-    e.preventDefault();
-    btn.click();
-  }
-});
- 
+ const btnTheme = document.getElementById("btnTheme");
+
+btnTheme.onclick = ()=>{
+
+  document.body.classList.toggle("light-mode");
+
+  const light = document.body.classList.contains("light-mode");
+
+  btnTheme.textContent = light ? "🌙" : "☀️";
+
+  localStorage.setItem(
+    "temaPegon",
+    light ? "light" : "dark"
+  );
+};
+const temaTersimpan = localStorage.getItem("temaPegon");
+
+if(temaTersimpan === "light"){
+  document.body.classList.add("light-mode");
+  btnTheme.textContent = "🌙";
+}
+
+function tampilkanPesan(pesan){
+  output.textContent = pesan;
+  output.classList.add("status-message");
+}
 
 loadKamus();
 </script>
