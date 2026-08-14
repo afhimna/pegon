@@ -830,11 +830,17 @@ function transliterasi(teks){
   let hasilAkhir = [];
  
   lines.forEach(line=>{
-    const tokens = line.match(/[a-zA-Z0-9٠-٩'-]+|[،؛؟.,?!]/g) || [];
+    const tokens = line.match(/[\u0600-\u06FF]+|[a-zA-Z0-9٠-٩'-]+|[،؛؟.,?!]/g) || [];
     let hasil = [];
  
     for(let i=0;i<tokens.length;i++){
       let token = tokens[i];
+
+// Jika sudah berupa Arab/Pegon, tampilkan apa adanya
+if(/[\u0600-\u06FF]/.test(token)){
+  hasil.push(token);
+  continue;
+}
  
       
       if(/[،؛؟.,?!]/.test(token)){
